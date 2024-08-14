@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Input } from './components/ui/input'
 import { Label } from './components/ui/label'
 import { Button } from './components/ui/button'
@@ -6,30 +6,22 @@ import { Separator } from './components/ui/separator'
 import chroma from 'chroma-js'
 import { Trash2Icon } from 'lucide-react'
 
-type ColorType = {
+export type ColorType = {
   value: string
   id: string
 }
 
 type ColorConfiguratorProps = {
-  onColorsChange?: (colors: ColorType[]) => void
+  colors: ColorType[]
+  onColorsChange: (colors: ColorType[]) => void
+  maxNumberOfColors: number
 }
 
 export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
+  colors,
   onColorsChange,
+  maxNumberOfColors,
 }) => {
-  const [colors, setColors] = useState<ColorType[]>([
-    {
-      value: chroma.random().hex(),
-      id: '1',
-    },
-  ])
-
-  // Notify parent each time colors change.
-  useEffect(() => {
-    if (onColorsChange) onColorsChange(colors)
-  }, [colors, onColorsChange])
-
   return (
     <div className="max-w-prose mx-auto">
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight my-4">
@@ -37,7 +29,7 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
       </h3>
       <div className="flex gap-4">
         {colors.map((color, index) => (
-          <>
+          <div key={color.id}>
             <div className="grid max-w-sm items-center gap-1.5">
               <Label htmlFor="email">Color {index + 1}</Label>
               <div className="flex gap-2">
@@ -46,7 +38,7 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
                   className="w-24"
                   value={color.value}
                   onChange={(e) =>
-                    setColors((colors) =>
+                    onColorsChange(
                       colors.map((oldColor) =>
                         oldColor.id === color.id
                           ? { ...color, value: e.target.value }
@@ -59,9 +51,7 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
                 {colors.length > 1 && (
                   <Button
                     onClick={() =>
-                      setColors((colors) =>
-                        colors.filter((c) => c.id !== color.id)
-                      )
+                      onColorsChange(colors.filter((c) => c.id !== color.id))
                     }
                     variant="outline"
                     size="icon"
@@ -73,16 +63,16 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
               </div>
             </div>
 
-            {index < 2 && (
+            {index < maxNumberOfColors - 1 && (
               <Separator className="h-auto" orientation="vertical" />
             )}
-          </>
+          </div>
         ))}
-        {colors.length < 3 && (
+        {colors.length < maxNumberOfColors && (
           <div className="flex items-end">
             <Button
               onClick={() =>
-                setColors((colors) => [
+                onColorsChange([
                   ...colors,
                   {
                     value: chroma.random().hex(),
