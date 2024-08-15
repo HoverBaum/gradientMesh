@@ -42,7 +42,7 @@ export const MeshDisplay: React.FC<MeshDisplayProps> = ({
   const backgroundImage = colors
     .map(
       (color) =>
-        `radial-gradient(circle at ${generateConstrainedPosition()}, ${color}, transparent 75%)`
+        `radial-gradient(circle at ${generateConstrainedPosition()}, ${color}, transparent 66%)`
     )
     .join(', ')
 
@@ -53,7 +53,7 @@ export const MeshDisplay: React.FC<MeshDisplayProps> = ({
   return (
     <div className="h-full w-full overflow-hidden">
       <div
-        className="blur-sm bg-muted bg-blend-color dark:bg-blend-darken w-full h-full "
+        className="blur-md bg-muted bg-blend-color dark:bg-blend-darken w-full h-full "
         style={style}
       ></div>
     </div>
