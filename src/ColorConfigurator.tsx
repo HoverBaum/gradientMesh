@@ -2,9 +2,9 @@ import React from 'react'
 import { Input } from './components/ui/input'
 import { Label } from './components/ui/label'
 import { Button } from './components/ui/button'
-import { Separator } from './components/ui/separator'
 import chroma from 'chroma-js'
 import { Trash2Icon } from 'lucide-react'
+import { randomColors } from './randomColors'
 
 export type ColorType = {
   value: string
@@ -23,13 +23,13 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
   maxNumberOfColors,
 }) => {
   return (
-    <div className="max-w-prose mx-auto">
+    <div className="w-full sm:w-[65ch] mx-auto p-4">
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight my-4">
         Colors
       </h3>
-      <div className="flex">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {colors.map((color, index) => (
-          <div className="flex" key={color.id}>
+          <div className="flex mt-2" key={color.id}>
             <div className="grid max-w-sm items-center gap-1.5">
               <Label htmlFor="email">Color {index + 1}</Label>
               <div className="flex gap-2">
@@ -62,9 +62,9 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
                 )}
               </div>
             </div>
-            {index < maxNumberOfColors - 1 && (
+            {/* {index < maxNumberOfColors - 1 && (
               <Separator className="h-full mx-4" orientation="vertical" />
-            )}
+            )} */}
           </div>
         ))}
         {colors.length < maxNumberOfColors && (
@@ -85,6 +85,14 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
             </Button>
           </div>
         )}
+        <div className="flex items-end">
+          <Button
+            variant="outline"
+            onClick={() => onColorsChange(randomColors(colors.length))}
+          >
+            Shuffle
+          </Button>
+        </div>
       </div>
     </div>
   )

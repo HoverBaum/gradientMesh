@@ -5,29 +5,14 @@ import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
 import { MeshDisplay } from './MeshDisplay'
 import { ModeToggle } from './components/mode-toggle'
-import { Button } from './components/ui/button'
+import { randomColors } from './randomColors'
 
 const MAX_COLORS = 3
 const GRADIENT_COLORS = 7
 const GRADIENT_MODE = 'hsl'
 
 function App() {
-  const shuffleColors = (): ColorType[] => [
-    {
-      value: chroma.random().hex(),
-      id: '1',
-    },
-    {
-      value: chroma.random().hex(),
-      id: '2',
-    },
-    {
-      value: chroma.random().hex(),
-      id: '3',
-    },
-  ]
-
-  const [colors, setColors] = useState<ColorType[]>(shuffleColors())
+  const [colors, setColors] = useState<ColorType[]>(randomColors())
   const [gradientColors, setGradientColors] = useState<string[]>([])
 
   useEffect(() => {
@@ -62,20 +47,12 @@ function App() {
       <div className="absolute top-4 right-4">
         <ModeToggle />
       </div>
-      <div className="flex max-w-prose items-end mx-auto">
+      <div className="max-w-prose mx-auto">
         <ColorConfigurator
           colors={colors}
           onColorsChange={setColors}
           maxNumberOfColors={MAX_COLORS}
         />
-
-        <Button
-          className="ml-6"
-          variant="outline"
-          onClick={() => setColors(shuffleColors())}
-        >
-          Shuffle
-        </Button>
       </div>
       <div className="max-w-prose mx-auto mt-4 flex">
         <div>
