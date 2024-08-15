@@ -5,13 +5,14 @@ import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
 import { MeshDisplay } from './MeshDisplay'
 import { ModeToggle } from './components/mode-toggle'
+import { Button } from './components/ui/button'
 
 const MAX_COLORS = 3
 const GRADIENT_COLORS = 7
 const GRADIENT_MODE = 'hsl'
 
 function App() {
-  const [colors, setColors] = useState<ColorType[]>([
+  const shuffleColors = (): ColorType[] => [
     {
       value: chroma.random().hex(),
       id: '1',
@@ -24,7 +25,9 @@ function App() {
       value: chroma.random().hex(),
       id: '3',
     },
-  ])
+  ]
+
+  const [colors, setColors] = useState<ColorType[]>(shuffleColors())
   const [gradientColors, setGradientColors] = useState<string[]>([])
 
   useEffect(() => {
@@ -59,21 +62,33 @@ function App() {
       <div className="absolute top-4 right-4">
         <ModeToggle />
       </div>
-      <ColorConfigurator
-        colors={colors}
-        onColorsChange={setColors}
-        maxNumberOfColors={MAX_COLORS}
-      />
-      <div className="max-w-prose mx-auto mt-4">
-        <Label>Gradient</Label>
-        <div className="flex gap-4 mt-1">
-          {gradientColors.map((color, index) => (
-            <div
-              key={color + index}
-              className="w-6 h-6 rounded-md"
-              style={{ backgroundColor: color }}
-            />
-          ))}
+      <div className="flex max-w-prose items-end mx-auto">
+        <ColorConfigurator
+          colors={colors}
+          onColorsChange={setColors}
+          maxNumberOfColors={MAX_COLORS}
+        />
+
+        <Button
+          className="ml-6"
+          variant="outline"
+          onClick={() => setColors(shuffleColors())}
+        >
+          Shuffle
+        </Button>
+      </div>
+      <div className="max-w-prose mx-auto mt-4 flex">
+        <div>
+          <Label>Gradient</Label>
+          <div className="flex gap-4 mt-1">
+            {gradientColors.map((color, index) => (
+              <div
+                key={color + index}
+                className="w-6 h-6 rounded-md"
+                style={{ backgroundColor: color }}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <Separator className="mt-6" />

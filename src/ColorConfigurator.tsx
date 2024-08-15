@@ -27,9 +27,9 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
       <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight my-4">
         Colors
       </h3>
-      <div className="flex gap-4">
+      <div className="flex">
         {colors.map((color, index) => (
-          <div key={color.id}>
+          <div className="flex" key={color.id}>
             <div className="grid max-w-sm items-center gap-1.5">
               <Label htmlFor="email">Color {index + 1}</Label>
               <div className="flex gap-2">
@@ -62,9 +62,8 @@ export const ColorConfigurator: React.FC<ColorConfiguratorProps> = ({
                 )}
               </div>
             </div>
-
             {index < maxNumberOfColors - 1 && (
-              <Separator className="h-auto" orientation="vertical" />
+              <Separator className="h-full mx-4" orientation="vertical" />
             )}
           </div>
         ))}
