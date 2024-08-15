@@ -1,50 +1,25 @@
-# React + TypeScript + Vite
+# Gradient Mesh
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React based application to display a Gradient Mesh based on 1-3 colors.
 
-Currently, two official plugins are available:
+![Demo of the application](./assets/demo.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## How it works
 
-## Expanding the ESLint configuration
+1. The system takes between one to three colors as input.
+2. Based on those colors, a list of 7 colors is created that will be used for the mesh.
+3. The colors are randomly distributed across the display to form a mesh of gradients.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 7 Colors
 
-- Configure the top-level `parserOptions` property like this:
+The 7 colors are selected using [chroma-js](https://gka.github.io/chroma.js/) and their [scale](https://gka.github.io/chroma.js/#chroma-scale) function. For three colors we form two scales and add them together, before we pick 7 colors. By adding two scales we can get a more interesting mix of colors.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Gradient Mesh
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+The Mesh of gradients is achieved via adding multiple `radial-gradient(circle at 75% 30%, #d91df2, transparent 70%)` to the background image of the mesh display. Relevant docs: [gradient](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/radial-gradient), [gradient sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/radial-gradient#size), [positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-origin), [background blend mode](https://developer.mozilla.org/en-US/docs/Web/CSS/background-blend-mode).
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+During dark mode we change the `background-blend-mode` from `color` to `darken` which works better with a dark background.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Inspiration
+
+Highly inspired by: [CSSHeros Mesher](https://csshero.org/mesher/)
