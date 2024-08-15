@@ -4,6 +4,7 @@ import chroma from 'chroma-js'
 import { Label } from './components/ui/label'
 import { Separator } from './components/ui/separator'
 import { MeshDisplay } from './MeshDisplay'
+import { ModeToggle } from './components/mode-toggle'
 
 const MAX_COLORS = 3
 const GRADIENT_COLORS = 7
@@ -55,6 +56,9 @@ function App() {
 
   return (
     <div className="flex flex-col h-full">
+      <div className="absolute top-4 right-4">
+        <ModeToggle />
+      </div>
       <ColorConfigurator
         colors={colors}
         onColorsChange={setColors}
