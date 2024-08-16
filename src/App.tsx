@@ -18,8 +18,14 @@ function App() {
   useEffect(() => {
     if (colors.length === 0) return
     if (colors.length === 1) {
-      setGradientColors(chroma.scale([colors[0].value]).colors(GRADIENT_COLORS))
+      // For one one color we use complementary color.
+      const color = chroma(colors[0].value)
+      const complementary = color.set('hsl.h', (color.get('hsl.h') + 180) % 360)
+      setGradientColors(
+        chroma.scale([color.hex(), complementary.hex()]).colors(GRADIENT_COLORS)
+      )
     } else if (colors.length === 2) {
+      // For two colors we form a scale between them.
       setGradientColors(
         chroma
           .scale([colors[0].value, colors[1].value])
@@ -27,6 +33,8 @@ function App() {
           .colors(GRADIENT_COLORS)
       )
     } else {
+      // For three colors we combine scale 1-2 and 2-3.
+      // This gives more variance in colors then a single 1-2-3 scale.
       const firstColors = chroma
         .scale([colors[0].value, colors[1].value])
         .mode(GRADIENT_MODE)
